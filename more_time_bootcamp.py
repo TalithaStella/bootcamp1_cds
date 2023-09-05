@@ -1,17 +1,27 @@
-
 # =====================
-# Essa foi a versão entregue, tendo 6 horas disponíveis. 
+# BIBLIOTECAS NECESSÁRIAS
 # =====================
 
 import pandas as pd
+# import seaborn as sns
 import streamlit as st
 import folium
 import plotly.express as px
 from streamlit_folium import folium_static
 import plotly.graph_objects as go
 
+
+# st.set_page_config( layout='wide')
+
 df = pd.read_csv('ab_raw.csv' )
+
 df1 = df.copy()
+
+
+# ===================================================================
+#                         Sidebar no streamlit 
+# =================================================================== 
+
 
 # ===================================================================
 #                     Layout no streamlit 
@@ -62,6 +72,17 @@ with tab1:
 
         st.plotly_chart( fig1, use_container_width=True)
 
+
+#         graf = df1[['neighbourhood_group', 'price']].groupby('neighbourhood_group').agg({'price' : ['mean', 'std']})
+#         graf.columns = ['média', 'DP']
+#         graf = graf.reset_index()
+
+#         fig = go.Figure()
+#         # fig.add_trace(go.bar(name= 'control', x=graf['neighbourhood_group'], y=graf['média'], error_y=dict (type = 'data', array=graf['DP'] )))
+#         fig.add_trace(go.Bar(name='control', x=graf['neighbourhood_group'], y=graf['média'], error_y=dict(type='data', array=graf['DP'])))
+
+#         fig.update_layout(barmode='group')
+#         st.plotly_chart(fig, use_container_width=True)
 
     with col2: 
         st.subheader ('Média da diária por tipo de acomodação')
