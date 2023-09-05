@@ -1,27 +1,60 @@
+
 # =====================
-# BIBLIOTECAS NECESSÁRIAS
+# Essa seria a versão com mais 1 hora disponível.
 # =====================
 
 import pandas as pd
-# import seaborn as sns
 import streamlit as st
 import folium
 import plotly.express as px
 from streamlit_folium import folium_static
 import plotly.graph_objects as go
 
-
-# st.set_page_config( layout='wide')
-
 df = pd.read_csv('ab_raw.csv' )
-
 df1 = df.copy()
-
+st.set_page_config( layout='wide')
 
 # ===================================================================
-#                         Sidebar no streamlit 
+# Slidebar no streamlit 
 # =================================================================== 
 
+st.header('BootCamp #1 - Airbnb') 
+
+
+# Comando pra trazer imagem
+image = st.sidebar.image( 'icon.png', width=120)
+
+
+st.sidebar.markdown('# Airbnb Company')
+st.sidebar.markdown("""---""")  
+
+st.sidebar.markdown('## Price Filter') 
+
+price_slider = st.sidebar.slider(
+    'Select a price:',
+    1.0, 10000.0, (10000.0))
+
+
+st.sidebar.markdown("""---""")
+
+st.sidebar.markdown('## Cities')
+region_options = st.sidebar.multiselect(
+    'Select the Region', 
+    ['Bronx', 'Brooklyn', 'Manhattan', 'Queens', 'Staten Island'], 
+    default=['Bronx', 'Brooklyn', 'Manhattan', 'Queens', 'Staten Island'] ) 
+
+
+st.sidebar.markdown("""---""") 
+st.sidebar.markdown("### Powered by Comunidade DS.")
+st.sidebar.markdown("###### Talitha Oliveira, Gabriel Azevedo")
+
+
+# Select filter default
+price_sel = df1['price'] <= price_slider
+df1 = df1.loc[price_sel, :]
+
+region_sel = df1['neighbourhood_group'].isin( region_options ) 
+df1 = df1.loc[region_sel, :]
 
 # ===================================================================
 #                     Layout no streamlit 
@@ -38,7 +71,7 @@ with tab1:
             
             with col1:
             
-                st.subheader ('1. Valor médio do aluguel em NY')
+                st.markdown('#### Valor médio do aluguel em NY')
 
                 rent_mean = round(df1['price'].mean(), 2)
                 st.metric(' ', rent_mean)
@@ -46,7 +79,7 @@ with tab1:
 
 
             with col2:
-                st.subheader('3. Aluguel diário mais caro em NY')
+                st.markdown('#### Aluguel diário mais caro em NY')
 
                 rent_max = round(df1['price'].max(), 2)
                 st.metric(' ',rent_max)
@@ -54,7 +87,7 @@ with tab1:
 
 
             with col3:    
-                st.subheader('5. Variação dos preços dos imóveis em NY')   
+                st.markdown('##### Variação dos preços dos imóveis em NY')   
 
                 rent_std = round(df1['price'].std(),2)
                 st.metric(' ',rent_std)
@@ -64,28 +97,19 @@ with tab1:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader ('9. Média da diária de cada região')
+        st.markdown('#### Média da diária de cada região')
 
         fig1 = mean_price_data = df1[['neighbourhood_group', 'price']].groupby('neighbourhood_group').mean().sort_values('price', ascending=False).reset_index()
 
         fig1 = px.bar(fig1, x='neighbourhood_group', y = 'price', text_auto=True)
+        fig1.update_xaxes(title_text='Região')
+        fig1.update_yaxes(title_text='Preço')
 
         st.plotly_chart( fig1, use_container_width=True)
 
 
-#         graf = df1[['neighbourhood_group', 'price']].groupby('neighbourhood_group').agg({'price' : ['mean', 'std']})
-#         graf.columns = ['média', 'DP']
-#         graf = graf.reset_index()
-
-#         fig = go.Figure()
-#         # fig.add_trace(go.bar(name= 'control', x=graf['neighbourhood_group'], y=graf['média'], error_y=dict (type = 'data', array=graf['DP'] )))
-#         fig.add_trace(go.Bar(name='control', x=graf['neighbourhood_group'], y=graf['média'], error_y=dict(type='data', array=graf['DP'])))
-
-#         fig.update_layout(barmode='group')
-#         st.plotly_chart(fig, use_container_width=True)
-
     with col2: 
-        st.subheader ('Média da diária por tipo de acomodação')
+        st.markdown('#### Média da diária por tipo de acomodação')
         
         fig2 = mean_price_data = df1[['room_type', 'price']].groupby('room_type').mean().sort_values('price', ascending=False).reset_index()
         
@@ -94,14 +118,14 @@ with tab1:
         st.plotly_chart( fig2, use_container_width=True)
 
 
-        
-        
+         
 with tab2:         
 
+
     col1, col2 = st.columns(2)
-        
-    with col1:
-        st.subheader ('14. Top 10 imóveis com mais avaliações, por região')
+    
+    with col1: 
+        st.markdown('#### Top 10 imóveis com mais avaliações, por região')
         
         df1['color'] = 'NA'
 
@@ -127,7 +151,7 @@ with tab2:
 
         
     with col2: 
-        st.subheader ('15. Top 50 maiores preços')
+        st.markdown('#### Top 50 maiores preços')
         cols = ['neighbourhood_group', 'latitude', 'longitude', 'price', 'color']
         top50_high_price = df1.loc[:, cols].sort_values('price', ascending=False).head(50).reset_index(drop=True)
         top50_high_price = top50_high_price.sort_values('price', ascending=False)
@@ -145,7 +169,7 @@ with tab2:
         
     with st.container(): 
 
-        st.subheader ('16. Top 10 menores preços')    
+        st.markdown('#### Top 10 menores preços')    
         cols = ['id', 'neighbourhood_group', 'latitude', 'longitude', 'price', 'color']
 
         region_bottom10_price = df1.loc[df1['price'] > 0, cols].sort_values(['neighbourhood_group', 'price'], ascending = True).groupby('neighbourhood_group').head(10).reset_index(drop=True)

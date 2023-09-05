@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 
 df = pd.read_csv('ab_raw.csv' )
 df1 = df.copy()
-
+st.set_page_config( layout='wide')
 # ===================================================================
 #                     Layout no streamlit 
 # ===================================================================
@@ -28,7 +28,7 @@ with tab1:
             
             with col1:
             
-                st.subheader ('1. Valor médio do aluguel em NY')
+                st.markdown('#### Valor médio do aluguel em NY')
 
                 rent_mean = round(df1['price'].mean(), 2)
                 st.metric(' ', rent_mean)
@@ -36,7 +36,7 @@ with tab1:
 
 
             with col2:
-                st.subheader('3. Aluguel diário mais caro em NY')
+                st.markdown('#### Aluguel diário mais caro em NY')
 
                 rent_max = round(df1['price'].max(), 2)
                 st.metric(' ',rent_max)
@@ -44,7 +44,7 @@ with tab1:
 
 
             with col3:    
-                st.subheader('5. Variação dos preços dos imóveis em NY')   
+                st.markdown('#### Variação dos preços dos imóveis em NY')   
 
                 rent_std = round(df1['price'].std(),2)
                 st.metric(' ',rent_std)
@@ -54,7 +54,7 @@ with tab1:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader ('9. Média da diária de cada região')
+        st.markdown('#### Média da diária de cada região')
 
         fig1 = mean_price_data = df1[['neighbourhood_group', 'price']].groupby('neighbourhood_group').mean().sort_values('price', ascending=False).reset_index()
 
@@ -64,7 +64,7 @@ with tab1:
 
 
     with col2: 
-        st.subheader ('Média da diária por tipo de acomodação')
+        st.markdown('#### Média da diária por tipo de acomodação')
         
         fig2 = mean_price_data = df1[['room_type', 'price']].groupby('room_type').mean().sort_values('price', ascending=False).reset_index()
         
@@ -73,14 +73,14 @@ with tab1:
         st.plotly_chart( fig2, use_container_width=True)
 
 
-        
-        
+         
 with tab2:         
 
+
     col1, col2 = st.columns(2)
-        
-    with col1:
-        st.subheader ('14. Top 10 imóveis com mais avaliações, por região')
+    
+    with col1: 
+        st.markdown('#### Top 10 imóveis com mais avaliações, por região')
         
         df1['color'] = 'NA'
 
@@ -106,7 +106,7 @@ with tab2:
 
         
     with col2: 
-        st.subheader ('15. Top 50 maiores preços')
+        st.markdown('#### Top 50 maiores preços')
         cols = ['neighbourhood_group', 'latitude', 'longitude', 'price', 'color']
         top50_high_price = df1.loc[:, cols].sort_values('price', ascending=False).head(50).reset_index(drop=True)
         top50_high_price = top50_high_price.sort_values('price', ascending=False)
@@ -124,7 +124,7 @@ with tab2:
         
     with st.container(): 
 
-        st.subheader ('16. Top 10 menores preços')    
+        st.markdown('#### Top 10 menores preços')    
         cols = ['id', 'neighbourhood_group', 'latitude', 'longitude', 'price', 'color']
 
         region_bottom10_price = df1.loc[df1['price'] > 0, cols].sort_values(['neighbourhood_group', 'price'], ascending = True).groupby('neighbourhood_group').head(10).reset_index(drop=True)
