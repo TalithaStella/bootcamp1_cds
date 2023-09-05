@@ -1,4 +1,4 @@
-link: https://talithastella-fomezero-zomato.streamlit.app/
+link: https://1bootcamp-abnb-t9.streamlit.app/
 
 Este é um projeto realizado durante a #1ª edição do BootCamp da Comunidade DS
 <hr>
@@ -53,6 +53,6 @@ Dentro do prazo estipulado conseguimos entregar o que foi solicitado, porém sem
 </div><br>
 
 Com 1 hora a mais foi possível implementar uma barra lateral com filtro, e melhora na caracterização da identidade visual.
-Disponível em: https://talithastella-fomezero-zomato.streamlit.app/
+Disponível em: https://1bootcamp-abnb-t9.streamlit.app/
 <br><br>
 
